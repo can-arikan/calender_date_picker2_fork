@@ -108,6 +108,7 @@ class CalendarDatePicker2Config {
     this.allowSameValueSelection,
     this.disableMonthPicker,
     this.useAbbrLabelForMonthModePicker,
+    this.monthLabels,
   })  : calendarType = calendarType ?? CalendarDatePicker2Type.single,
         firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate =
@@ -137,6 +138,9 @@ class CalendarDatePicker2Config {
   /// - Russian: вс, пн, вт, ср, чт, пт, сб - notice that the list begins with
   ///   вс (Sunday) even though the first day of week for Russian is Monday.
   final List<String>? weekdayLabels;
+
+  /// Custom month day labels
+  final List<String>? monthLabels;
 
   /// Custom text style for weekday labels
   final TextStyle? weekdayLabelTextStyle;
@@ -258,6 +262,7 @@ class CalendarDatePicker2Config {
     DateTime? currentDate,
     CalendarDatePicker2Mode? calendarViewMode,
     List<String>? weekdayLabels,
+    List<String>? monthLabels,
     TextStyle? weekdayLabelTextStyle,
     int? firstDayOfWeek,
     double? controlsHeight,
@@ -297,6 +302,7 @@ class CalendarDatePicker2Config {
     bool? useAbbrLabelForMonthModePicker,
   }) {
     return CalendarDatePicker2Config(
+      monthLabels: monthLabels ?? this.monthLabels,
       calendarType: calendarType ?? this.calendarType,
       firstDate: DateUtils.dateOnly(firstDate ?? this.firstDate),
       lastDate: DateUtils.dateOnly(lastDate ?? this.lastDate),
@@ -367,6 +373,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     DateTime? currentDate,
     CalendarDatePicker2Mode? calendarViewMode,
     List<String>? weekdayLabels,
+    List<String>? monthLabels,
     TextStyle? weekdayLabelTextStyle,
     int? firstDayOfWeek,
     double? controlsHeight,
@@ -420,6 +427,7 @@ class CalendarDatePicker2WithActionButtonsConfig
           currentDate: currentDate,
           calendarViewMode: calendarViewMode,
           weekdayLabels: weekdayLabels,
+          monthLabels: monthLabels,
           weekdayLabelTextStyle: weekdayLabelTextStyle,
           firstDayOfWeek: firstDayOfWeek,
           controlsHeight: controlsHeight,
@@ -494,6 +502,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     DateTime? currentDate,
     CalendarDatePicker2Mode? calendarViewMode,
     List<String>? weekdayLabels,
+    List<String>? monthLabels,
     TextStyle? weekdayLabelTextStyle,
     int? firstDayOfWeek,
     double? controlsHeight,
@@ -542,6 +551,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     bool? useAbbrLabelForMonthModePicker,
   }) {
     return CalendarDatePicker2WithActionButtonsConfig(
+      monthLabels: monthLabels ?? this.monthLabels,
       calendarType: calendarType ?? this.calendarType,
       firstDate: DateUtils.dateOnly(firstDate ?? this.firstDate),
       lastDate: DateUtils.dateOnly(lastDate ?? this.lastDate),

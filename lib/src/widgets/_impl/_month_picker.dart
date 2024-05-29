@@ -163,8 +163,9 @@ class _MonthPickerState extends State<_MonthPicker> {
                 selected: isSelected,
                 button: true,
                 child: Text(
-                  getLocaleShortMonthFormat(_locale)
-                      .format(DateTime(widget.initialMonth.year, month)),
+                  widget.config.monthLabels?[(month - 1)] ??
+                      getLocaleShortMonthFormat(_locale)
+                          .format(DateTime(widget.initialMonth.year, month)),
                   style: itemStyle,
                 ),
               ),
