@@ -165,7 +165,9 @@ class _DatePickerModeToggleButtonState
                         children: <Widget>[
                           Flexible(
                             child: Text(
-                              widget.config.modePickerTextHandler
+                              widget.config.monthLabels?[
+                                      (widget.monthDate.month - 1)] ??
+                                  widget.config.modePickerTextHandler
                                       ?.call(monthDate: widget.monthDate) ??
                                   _localizations
                                       .formatMonthYear(widget.monthDate),
@@ -213,11 +215,13 @@ class _DatePickerModeToggleButtonState
                             mainAxisAlignment: modePickerMainAxisAlignment,
                             children: <Widget>[
                               Text(
-                                (widget.config.useAbbrLabelForMonthModePicker ==
-                                            true
-                                        ? getLocaleShortMonthFormat
-                                        : getLocaleFullMonthFormat)(_locale)
-                                    .format(widget.monthDate),
+                                widget.config.monthLabels?[
+                                        (widget.monthDate.month - 1)] ??
+                                    (widget.config.useAbbrLabelForMonthModePicker ==
+                                                true
+                                            ? getLocaleShortMonthFormat
+                                            : getLocaleFullMonthFormat)(_locale)
+                                        .format(widget.monthDate),
                                 overflow: TextOverflow.ellipsis,
                                 style: controlTextStyle,
                               ),
@@ -255,7 +259,9 @@ class _DatePickerModeToggleButtonState
                             mainAxisAlignment: modePickerMainAxisAlignment,
                             children: <Widget>[
                               Text(
-                                _localizations.formatYear(widget.monthDate),
+                                widget.config.monthLabels?[
+                                        (widget.monthDate.month - 1)] ??
+                                    _localizations.formatYear(widget.monthDate),
                                 overflow: TextOverflow.ellipsis,
                                 style: controlTextStyle,
                               ),
