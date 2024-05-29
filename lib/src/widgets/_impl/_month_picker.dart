@@ -198,7 +198,6 @@ class _MonthPickerState extends State<_MonthPicker> {
     assert(debugCheckHasMaterial(context));
     return Column(
       children: <Widget>[
-        const Divider(),
         Expanded(
           child: GridView.builder(
             controller: _scrollController,
@@ -209,7 +208,6 @@ class _MonthPickerState extends State<_MonthPicker> {
                 const EdgeInsets.symmetric(horizontal: _monthPickerPadding),
           ),
         ),
-        const Divider(),
       ],
     );
   }
