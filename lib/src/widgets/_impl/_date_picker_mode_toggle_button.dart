@@ -165,9 +165,7 @@ class _DatePickerModeToggleButtonState
                         children: <Widget>[
                           Flexible(
                             child: Text(
-                              widget.config.monthLabels?[
-                                      (widget.monthDate.month - 1)] ??
-                                  widget.config.modePickerTextHandler
+                              widget.config.modePickerTextHandler
                                       ?.call(monthDate: widget.monthDate) ??
                                   _localizations
                                       .formatMonthYear(widget.monthDate),
@@ -259,9 +257,7 @@ class _DatePickerModeToggleButtonState
                             mainAxisAlignment: modePickerMainAxisAlignment,
                             children: <Widget>[
                               Text(
-                                widget.config.monthLabels?[
-                                        (widget.monthDate.month - 1)] ??
-                                    _localizations.formatYear(widget.monthDate),
+                                _localizations.formatYear(widget.monthDate),
                                 overflow: TextOverflow.ellipsis,
                                 style: controlTextStyle,
                               ),
