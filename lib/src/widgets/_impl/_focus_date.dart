@@ -9,19 +9,18 @@ class _FocusedDate extends InheritedWidget {
     Key? key,
     required Widget child,
     this.date,
-    this.scrollDirection,
   }) : super(key: key, child: child);
 
   final DateTime? date;
-  final TraversalDirection? scrollDirection;
 
   @override
   bool updateShouldNotify(_FocusedDate oldWidget) {
-    return !DateUtils.isSameDay(date, oldWidget.date) ||
-        scrollDirection != oldWidget.scrollDirection;
+    return !DateUtils.isSameDay(date, oldWidget.date);
   }
 
-  static _FocusedDate? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<_FocusedDate>();
+  static DateTime? maybeOf(BuildContext context) {
+    final _FocusedDate? focusedDate =
+        context.dependOnInheritedWidgetOfExactType<_FocusedDate>();
+    return focusedDate?.date;
   }
 }
