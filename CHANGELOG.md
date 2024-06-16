@@ -1,3 +1,25 @@
+## [1.0.6]
+- fix: pub dev analyzer warning
+
+## [1.0.5]
+- fix: rename `hideScrollCalendarStickyWeekLabelsHeader` to `hideScrollCalendarTopHeader`
+- fix: rename `hideScrollCalendarStickyWeekLabelsHeaderDivider` to `hideScrollCalendarTopHeaderDivider`
+- fix: rename `hideScrollCalendarWeekLabelsHeader` to `hideScrollCalendarMonthWeekHeader`
+
+## [1.0.4]
+- feat: add `scroll` mode into `CalendarDatePicker2Mode`
+- feat: add `hideScrollCalendarStickyWeekLabelsHeader` into config
+- feat: add `hideScrollCalendarStickyWeekLabelsHeaderDivider` into config
+- feat: add `hideScrollCalendarWeekLabelsHeader` into config
+- feat: add `scrollCalendarConstraints` into config
+- feat: add `scrollViewMonthYearBuilder` into config
+- feat: add `scrollViewOnScrolling` into config
+
+## [1.0.3]
+- feat: add `dayMaxWidth` into config
+- feat: add `hideMonthPickerDividers` into config
+- feat: add `hideYearPickerDividers` into config
+
 ## [1.0.2]
 
 - fix: current month & selected validation logics

@@ -187,6 +187,11 @@ class _YearPickerState extends State<YearPicker> {
     assert(debugCheckHasMaterial(context));
     return Column(
       children: <Widget>[
+        Divider(
+          color: widget.config.hideYearPickerDividers == true
+              ? Colors.transparent
+              : null,
+        ),
         Expanded(
           child: GridView.builder(
             controller: _scrollController,
@@ -196,6 +201,11 @@ class _YearPickerState extends State<YearPicker> {
             itemCount: math.max(_itemCount, minYears),
             padding: const EdgeInsets.symmetric(horizontal: _yearPickerPadding),
           ),
+        ),
+        Divider(
+          color: widget.config.hideYearPickerDividers == true
+              ? Colors.transparent
+              : null,
         ),
       ],
     );

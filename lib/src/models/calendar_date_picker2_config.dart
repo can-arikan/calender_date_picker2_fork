@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// Custom enum for a date picker type including single, multi, and range.
 enum CalendarDatePicker2Type {
+  /// Allows selecting a single date.
   single,
+
+  /// Allows selecting multiple dates.
   multi,
 
   /// Allows selecting a range of two dates.
@@ -20,12 +24,19 @@ enum CalendarDatePicker2Mode {
 
   /// Choosing a year.
   year,
+
+  /// Choosing a vertically scrollable calendar.
+  ///
+  /// The calendar must be wrapped inside a height-constrained widget
+  scroll,
 }
 
+/// Predicate to determine the text style for a day.
 typedef CalendarDayTextStylePredicate = TextStyle? Function({
   required DateTime date,
 });
 
+/// Custom builder for the day widget
 typedef CalendarDayBuilder = Widget? Function({
   required DateTime date,
   TextStyle? textStyle,
@@ -35,6 +46,7 @@ typedef CalendarDayBuilder = Widget? Function({
   bool? isToday,
 });
 
+/// Custom builder for the year widget
 typedef CalendarYearBuilder = Widget? Function({
   required int year,
   TextStyle? textStyle,
@@ -44,6 +56,7 @@ typedef CalendarYearBuilder = Widget? Function({
   bool? isCurrentYear,
 });
 
+/// Custom builder for the month widget
 typedef CalendarMonthBuilder = Widget? Function({
   required int month,
   TextStyle? textStyle,
@@ -53,16 +66,28 @@ typedef CalendarMonthBuilder = Widget? Function({
   bool? isCurrentMonth,
 });
 
+/// Handler for the text displayed in the mode picker
 typedef CalendarModePickerTextHandler = String? Function({
   required DateTime monthDate,
 });
 
+/// Builder for the month and year in the scroll calendar view.
+typedef CalendarScrollViewMonthYearBuilder = Widget Function(
+    DateTime monthDate);
+
+/// Callback for the scroll calendar view on scrolling
+typedef CalendarScrollViewOnScrolling = Widget Function(double offset);
+
+/// Predicate to determine whether a day should be selectable.
 typedef CalendarSelectableDayPredicate = bool Function(DateTime day);
 
+/// Predicate to determine whether a year should be selectable.
 typedef CalendarSelectableYearPredicate = bool Function(int year);
 
+/// Predicate to determine whether a month should be selectable.
 typedef CalendarSelectableMonthPredicate = bool Function(int year, int month);
 
+/// Custom configuration for CalendarDatePicker2
 class CalendarDatePicker2Config {
   CalendarDatePicker2Config({
     CalendarDatePicker2Type? calendarType,
@@ -109,6 +134,15 @@ class CalendarDatePicker2Config {
     this.disableMonthPicker,
     this.useAbbrLabelForMonthModePicker,
     this.monthLabels,
+    this.dayMaxWidth,
+    this.hideMonthPickerDividers,
+    this.hideYearPickerDividers,
+    this.hideScrollCalendarTopHeader,
+    this.hideScrollCalendarTopHeaderDivider,
+    this.hideScrollCalendarMonthWeekHeader,
+    this.scrollCalendarConstraints,
+    this.scrollViewMonthYearBuilder,
+    this.scrollViewOnScrolling,
   })  : calendarType = calendarType ?? CalendarDatePicker2Type.single,
         firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate =
@@ -255,6 +289,34 @@ class CalendarDatePicker2Config {
   /// Use Abbreviation label for month mode picker, only works when month picker is enabled
   final bool? useAbbrLabelForMonthModePicker;
 
+  /// Max width of day widget. When [dayMaxWidth] is not null, it will override default size settings
+  final double? dayMaxWidth;
+
+  /// Flag to hide dividers on month picker
+  final bool? hideMonthPickerDividers;
+
+  /// Flag to hide dividers on year picker
+  final bool? hideYearPickerDividers;
+
+  /// Flag to hide top week labels header on scroll view
+  final bool? hideScrollCalendarTopHeader;
+
+  /// Flag to hide top week labels header divider on scroll view
+  final bool? hideScrollCalendarTopHeaderDivider;
+
+  /// Flag to hide month calendar week labels header on scroll view
+  final bool? hideScrollCalendarMonthWeekHeader;
+
+  /// BoxConstraints for the scroll calendar view, only work for scroll mode
+  final BoxConstraints? scrollCalendarConstraints;
+
+  /// Function to provide full control over scroll calendar month year UI
+  final CalendarScrollViewMonthYearBuilder? scrollViewMonthYearBuilder;
+
+  /// Function to callback over scrolling on scroll view
+  final CalendarScrollViewOnScrolling? scrollViewOnScrolling;
+
+  /// Copy the current [CalendarDatePicker2Config] with some new values
   CalendarDatePicker2Config copyWith({
     CalendarDatePicker2Type? calendarType,
     DateTime? firstDate,
@@ -300,6 +362,15 @@ class CalendarDatePicker2Config {
     bool? allowSameValueSelection,
     bool? disableMonthPicker,
     bool? useAbbrLabelForMonthModePicker,
+    double? dayMaxWidth,
+    bool? hideMonthPickerDividers,
+    bool? hideYearPickerDividers,
+    bool? hideScrollCalendarTopHeader,
+    bool? hideScrollCalendarTopHeaderDivider,
+    bool? hideScrollCalendarMonthWeekHeader,
+    BoxConstraints? scrollCalendarConstraints,
+    CalendarScrollViewMonthYearBuilder? scrollViewMonthYearBuilder,
+    CalendarScrollViewOnScrolling? scrollViewOnScrolling,
   }) {
     return CalendarDatePicker2Config(
       monthLabels: monthLabels ?? this.monthLabels,
@@ -360,10 +431,28 @@ class CalendarDatePicker2Config {
       disableMonthPicker: disableMonthPicker ?? this.disableMonthPicker,
       useAbbrLabelForMonthModePicker:
           useAbbrLabelForMonthModePicker ?? this.useAbbrLabelForMonthModePicker,
+      dayMaxWidth: dayMaxWidth ?? this.dayMaxWidth,
+      hideMonthPickerDividers:
+          hideMonthPickerDividers ?? this.hideMonthPickerDividers,
+      hideYearPickerDividers:
+          hideYearPickerDividers ?? this.hideYearPickerDividers,
+      hideScrollCalendarTopHeader:
+          hideScrollCalendarTopHeader ?? this.hideScrollCalendarTopHeader,
+      hideScrollCalendarTopHeaderDivider: hideScrollCalendarTopHeaderDivider ??
+          this.hideScrollCalendarTopHeaderDivider,
+      hideScrollCalendarMonthWeekHeader: hideScrollCalendarMonthWeekHeader ??
+          this.hideScrollCalendarMonthWeekHeader,
+      scrollCalendarConstraints:
+          scrollCalendarConstraints ?? this.scrollCalendarConstraints,
+      scrollViewMonthYearBuilder:
+          scrollViewMonthYearBuilder ?? this.scrollViewMonthYearBuilder,
+      scrollViewOnScrolling:
+          scrollViewOnScrolling ?? this.scrollViewOnScrolling,
     );
   }
 }
 
+/// Custom configuration for CalendarDatePicker2 with action buttons
 class CalendarDatePicker2WithActionButtonsConfig
     extends CalendarDatePicker2Config {
   CalendarDatePicker2WithActionButtonsConfig({
@@ -411,6 +500,15 @@ class CalendarDatePicker2WithActionButtonsConfig
     bool? allowSameValueSelection,
     bool? disableMonthPicker,
     bool? useAbbrLabelForMonthModePicker,
+    double? dayMaxWidth,
+    bool? hideMonthPickerDividers,
+    bool? hideYearPickerDividers,
+    bool? hideScrollCalendarTopHeader,
+    bool? hideScrollCalendarTopHeaderDivider,
+    bool? hideScrollCalendarMonthWeekHeader,
+    BoxConstraints? scrollCalendarConstraints,
+    CalendarScrollViewMonthYearBuilder? scrollViewMonthYearBuilder,
+    CalendarScrollViewOnScrolling? scrollViewOnScrolling,
     this.gapBetweenCalendarAndButtons,
     this.cancelButtonTextStyle,
     this.cancelButton,
@@ -465,6 +563,16 @@ class CalendarDatePicker2WithActionButtonsConfig
           allowSameValueSelection: allowSameValueSelection,
           disableMonthPicker: disableMonthPicker,
           useAbbrLabelForMonthModePicker: useAbbrLabelForMonthModePicker,
+          dayMaxWidth: dayMaxWidth,
+          hideMonthPickerDividers: hideMonthPickerDividers,
+          hideYearPickerDividers: hideYearPickerDividers,
+          hideScrollCalendarTopHeader: hideScrollCalendarTopHeader,
+          hideScrollCalendarTopHeaderDivider:
+              hideScrollCalendarTopHeaderDivider,
+          hideScrollCalendarMonthWeekHeader: hideScrollCalendarMonthWeekHeader,
+          scrollCalendarConstraints: scrollCalendarConstraints,
+          scrollViewMonthYearBuilder: scrollViewMonthYearBuilder,
+          scrollViewOnScrolling: scrollViewOnScrolling,
         );
 
   /// The gap between calendar and action buttons
@@ -549,6 +657,15 @@ class CalendarDatePicker2WithActionButtonsConfig
     bool? allowSameValueSelection,
     bool? disableMonthPicker,
     bool? useAbbrLabelForMonthModePicker,
+    double? dayMaxWidth,
+    bool? hideMonthPickerDividers,
+    bool? hideYearPickerDividers,
+    bool? hideScrollCalendarTopHeader,
+    bool? hideScrollCalendarTopHeaderDivider,
+    bool? hideScrollCalendarMonthWeekHeader,
+    BoxConstraints? scrollCalendarConstraints,
+    CalendarScrollViewMonthYearBuilder? scrollViewMonthYearBuilder,
+    CalendarScrollViewOnScrolling? scrollViewOnScrolling,
   }) {
     return CalendarDatePicker2WithActionButtonsConfig(
       monthLabels: monthLabels ?? this.monthLabels,
@@ -623,6 +740,23 @@ class CalendarDatePicker2WithActionButtonsConfig
       disableMonthPicker: disableMonthPicker ?? this.disableMonthPicker,
       useAbbrLabelForMonthModePicker:
           useAbbrLabelForMonthModePicker ?? this.useAbbrLabelForMonthModePicker,
+      dayMaxWidth: dayMaxWidth ?? this.dayMaxWidth,
+      hideMonthPickerDividers:
+          hideMonthPickerDividers ?? this.hideMonthPickerDividers,
+      hideYearPickerDividers:
+          hideYearPickerDividers ?? this.hideYearPickerDividers,
+      hideScrollCalendarTopHeader:
+          hideScrollCalendarTopHeader ?? this.hideScrollCalendarTopHeader,
+      hideScrollCalendarTopHeaderDivider: hideScrollCalendarTopHeaderDivider ??
+          this.hideScrollCalendarTopHeaderDivider,
+      hideScrollCalendarMonthWeekHeader: hideScrollCalendarMonthWeekHeader ??
+          this.hideScrollCalendarMonthWeekHeader,
+      scrollCalendarConstraints:
+          scrollCalendarConstraints ?? this.scrollCalendarConstraints,
+      scrollViewMonthYearBuilder:
+          scrollViewMonthYearBuilder ?? this.scrollViewMonthYearBuilder,
+      scrollViewOnScrolling:
+          scrollViewOnScrolling ?? this.scrollViewOnScrolling,
     );
   }
 }

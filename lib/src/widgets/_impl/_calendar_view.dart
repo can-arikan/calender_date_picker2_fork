@@ -298,8 +298,7 @@ class _CalendarViewState extends State<_CalendarView> {
         DateUtils.addMonthsToMonthDate(widget.config.firstDate, index);
     return _DayPicker(
       key: ValueKey<DateTime>(month),
-      selectedDates: (widget.selectedDates..removeWhere((d) => d == null))
-          .cast<DateTime>(),
+      selectedDates: widget.selectedDates.whereType<DateTime>().toList(),
       onChanged: _handleDateSelected,
       config: widget.config,
       displayedMonth: month,
@@ -323,6 +322,9 @@ class _CalendarViewState extends State<_CalendarView> {
               children: <Widget>[
                 if (widget.config.centerAlignModePicker != true) const Spacer(),
                 IconButton(
+                  splashRadius: widget.config.dayMaxWidth != null
+                      ? widget.config.dayMaxWidth! * 2 / 3
+                      : null,
                   icon: widget.config.lastMonthIcon ??
                       const Icon(Icons.chevron_left),
                   color: controlColor,
@@ -334,6 +336,9 @@ class _CalendarViewState extends State<_CalendarView> {
                 ),
                 if (widget.config.centerAlignModePicker == true) const Spacer(),
                 IconButton(
+                  splashRadius: widget.config.dayMaxWidth != null
+                      ? widget.config.dayMaxWidth! * 2 / 3
+                      : null,
                   icon: widget.config.nextMonthIcon ??
                       const Icon(Icons.chevron_right),
                   color: controlColor,

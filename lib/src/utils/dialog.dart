@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 
+/// Display CalendarDatePicker with action buttons
 Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
   required BuildContext context,
   required CalendarDatePicker2WithActionButtonsConfig config,
@@ -27,7 +28,9 @@ Future<List<DateTime?>?> showCalendarDatePicker2Dialog({
     clipBehavior: Clip.antiAlias,
     child: SizedBox(
       width: dialogSize.width,
-      height: max(dialogSize.height, 410),
+      height: config.dayMaxWidth != null
+          ? dialogSize.height
+          : max(dialogSize.height, 410),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
